@@ -50,7 +50,9 @@ public class CaixaEletronico {
 
 	public String sacar() {
 		BigDecimal valorSaque = hardware.processarValorParaSaque();
-		contaLogada.sacar(valorSaque);
+		if(!contaLogada.sacar(valorSaque))
+			return "Saldo insuficiente";
+		
 		servicoRemoto.persistirConta(contaLogada);
 		contaLogada.confirmarOperacao();
 		return "Retire seu dinheiro";

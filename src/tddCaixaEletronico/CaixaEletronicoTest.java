@@ -148,6 +148,22 @@ class CaixaEletronicoTest {
 			mensagemExibida = caixaEletronico.saldo();
 			assertEquals("O saldo é R$500,00", mensagemExibida);
 		}
+		
+		@Test
+		void naoDeveriaSacarDaContaCorrenteCasoSaldoInsuficiente() {
+			hardware.configurarValorParaSaque(BigDecimal.valueOf(1_500));
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.sacar();
+			assertEquals("Saldo insuficiente", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+		}
 	}
 
 }

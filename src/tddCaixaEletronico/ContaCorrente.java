@@ -26,8 +26,13 @@ public class ContaCorrente {
 		saldoAConfirmar = saldo.add(valorDeposito);
 	}
 	
-	public void sacar(BigDecimal valorSaque) {
-		saldoAConfirmar = saldo.subtract(valorSaque);
+	public boolean sacar(BigDecimal valorSaque) {
+		BigDecimal resultado = saldo.subtract(valorSaque);
+		if(resultado.compareTo(BigDecimal.ZERO) < 0)
+			return false;
+		
+		saldoAConfirmar = resultado;
+		return true;
 	}
 	
 	public void reverterOperacao() {
