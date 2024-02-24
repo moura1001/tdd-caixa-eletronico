@@ -2,5 +2,5 @@ package tddCaixaEletronico;
 
 public interface Hardware {
 	
-	String pegarNumeroDaContaCartao();
+	String pegarNumeroDaContaCartao() throws HardwareException;
 }
