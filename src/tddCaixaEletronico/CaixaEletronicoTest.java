@@ -109,6 +109,25 @@ class CaixaEletronicoTest {
 			mensagemExibida = caixaEletronico.saldo();
 			assertEquals("O saldo é R$1.000,00", mensagemExibida);
 		}
+		
+		@Test
+		void deveriaLancarExcecaoPorMauFuncionamentoNoServicoRemotoAoTentarRealizarDeposito() {
+			hardware.configurarEnvelopeDeDeposito(BigDecimal.valueOf(500));
+			servicoRemoto.configurarFalhaDeFuncionamento(FalhaServicoRemoto.REALIZAR_DEPOSITO);
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			ServicoRemotoException thrown = assertThrows(ServicoRemotoException.class, () -> {
+				caixaEletronico.depositar();
+	        });
+	        assertEquals("Falha de comunicação com o serviço remoto: Erro ao tentar realizar depósito", thrown.getMessage());
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+		}
 	}
 
 }

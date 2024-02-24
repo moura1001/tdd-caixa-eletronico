@@ -38,7 +38,13 @@ public class CaixaEletronico {
 	public String depositar() {
 		BigDecimal valorDeposito = hardware.lerEnvelope();
 		contaLogada.depositar(valorDeposito);
-		servicoRemoto.persistirConta(contaLogada);
+		try {
+			servicoRemoto.persistirConta(contaLogada);
+		} catch (ServicoRemotoException e) {
+			contaLogada.reverterOperacao();
+			throw e;
+		}
+		contaLogada.confirmarOperacao();
 		return "Depósito recebido com sucesso";
 	}
 
