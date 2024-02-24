@@ -25,4 +25,9 @@ public class ServicoRemotoMock implements ServicoRemoto {
 		this.contaCorrente = contaCorrente;
 	}
 
+	@Override
+	public void persistirConta(ContaCorrente conta) throws ServicoRemotoException {
+		contaCorrente = conta;
+	}
+
 }

@@ -1,5 +1,7 @@
 package tddCaixaEletronico;
 
+import java.math.BigDecimal;
+
 public class CaixaEletronico {
 	
 	private Hardware hardware;
@@ -31,6 +33,13 @@ public class CaixaEletronico {
 			return "O saldo é R$" + contaLogada.consultarSaldo();
 		
 		return null;
+	}
+
+	public String depositar() {
+		BigDecimal valorDeposito = hardware.lerEnvelope();
+		contaLogada.depositar(valorDeposito);
+		servicoRemoto.persistirConta(contaLogada);
+		return "Depósito recebido com sucesso";
 	}
 
 }

@@ -71,5 +71,25 @@ class CaixaEletronicoTest {
 			assertEquals("O saldo é R$10.000.000,00", mensagemExibida);
 		}
 	}
+	
+	@Nested
+	@DisplayName("casos de teste para depósito na conta")
+	class Depositar {
+		@Test
+		void deveriaDepositarNaContaCorrenteComSucesso() {
+			hardware.configurarEnvelopeDeDeposito(BigDecimal.valueOf(500));
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.depositar();
+			assertEquals("Depósito recebido com sucesso", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.500,00", mensagemExibida);
+		}
+	}
 
 }

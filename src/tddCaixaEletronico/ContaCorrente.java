@@ -13,11 +13,15 @@ public class ContaCorrente {
 	public ContaCorrente(String numeroDaConta, BigDecimal saldoInicial) {
 		this.numeroDaConta = numeroDaConta;
 		saldo = new BigDecimal(0).setScale(2, RoundingMode.HALF_UP);
-		saldo = saldo.add(saldoInicial.abs());
+		saldo = saldo.add(saldoInicial);
 	}
 
 	public String consultarSaldo() {
 		return FORMATADOR_MOEDA.format(saldo);
+	}
+
+	public void depositar(BigDecimal valorDeposito) {
+		saldo = saldo.add(valorDeposito);		
 	}
 
 }
