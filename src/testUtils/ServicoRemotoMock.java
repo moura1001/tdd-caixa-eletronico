@@ -27,7 +27,7 @@ public class ServicoRemotoMock implements ServicoRemoto {
 
 	@Override
 	public void persistirConta(ContaCorrente conta) throws ServicoRemotoException {
-		if(FalhaServicoRemoto.REALIZAR_DEPOSITO.equals(falhaFuncionamento))
+		if(FalhaServicoRemoto.REALIZAR_DEPOSITO.equals(falhaFuncionamento) || FalhaServicoRemoto.REALIZAR_SAQUE.equals(falhaFuncionamento))
 			throw new ServicoRemotoException(falhaFuncionamento.causaDaFalha());
 		
 		contaCorrente = conta;

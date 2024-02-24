@@ -1,4 +1,4 @@
-package tddCaixaEletronico;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,6 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import tddCaixaEletronico.CaixaEletronico;
+import tddCaixaEletronico.ContaCorrente;
+import tddCaixaEletronico.HardwareException;
+import tddCaixaEletronico.ServicoRemotoException;
 import testUtils.FalhaHardware;
 import testUtils.FalhaServicoRemoto;
 import testUtils.HardwareMock;
@@ -179,6 +183,25 @@ class CaixaEletronicoTest {
 				caixaEletronico.sacar();
 	        });
 	        assertEquals("Falha de funcionamento do hardware: Erro na entrega do dinheiro", thrown.getMessage());
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+		}
+		
+		@Test
+		void deveriaLancarExcecaoPorMauFuncionamentoNoServicoRemotoAoTentarRealizarSaque() {
+			hardware.configurarValorParaSaque(BigDecimal.valueOf(500));
+			servicoRemoto.configurarFalhaDeFuncionamento(FalhaServicoRemoto.REALIZAR_SAQUE);
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			ServicoRemotoException thrown = assertThrows(ServicoRemotoException.class, () -> {
+				caixaEletronico.sacar();
+	        });
+	        assertEquals("Falha de comunicação com o serviço remoto: Erro ao tentar realizar saque", thrown.getMessage());
 			
 			mensagemExibida = caixaEletronico.saldo();
 			assertEquals("O saldo é R$1.000,00", mensagemExibida);
