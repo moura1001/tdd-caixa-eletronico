@@ -4,6 +4,7 @@ public class CaixaEletronico {
 	
 	private Hardware hardware;
 	private ServicoRemoto servicoRemoto;
+	private ContaCorrente contaLogada;
 
 	public CaixaEletronico(Hardware hardware, ServicoRemoto servico) {
 		this.hardware = hardware;
@@ -12,7 +13,7 @@ public class CaixaEletronico {
 
 	public String logar() {
 		if(consegueLerCartao()) {
-			servicoRemoto.recuperarConta();
+			contaLogada = servicoRemoto.recuperarConta();
 			
 			return "Usuário Autenticado";
 		}
@@ -23,6 +24,13 @@ public class CaixaEletronico {
 	private boolean consegueLerCartao() {
 		String numeroCartaoLido = hardware.pegarNumeroDaContaCartao();
 		return numeroCartaoLido != null && !numeroCartaoLido.isBlank();
+	}
+
+	public String saldo() {
+		if(contaLogada != null)
+			return "O saldo é R$" + contaLogada.consultarSaldo();
+		
+		return null;
 	}
 
 }

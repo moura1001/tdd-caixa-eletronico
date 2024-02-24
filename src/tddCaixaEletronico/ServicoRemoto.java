@@ -2,5 +2,5 @@ package tddCaixaEletronico;
 
 public interface ServicoRemoto {
 	
-	void recuperarConta() throws ServicoRemotoException;
+	ContaCorrente recuperarConta() throws ServicoRemotoException;
 }
