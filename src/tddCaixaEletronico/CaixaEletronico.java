@@ -3,16 +3,20 @@ package tddCaixaEletronico;
 public class CaixaEletronico {
 	
 	private Hardware hardware;
-	private ServicoRemoto servico;
+	private ServicoRemoto servicoRemoto;
 
 	public CaixaEletronico(Hardware hardware, ServicoRemoto servico) {
 		this.hardware = hardware;
-		this.servico = servico;
+		this.servicoRemoto = servico;
 	}
 
 	public String logar() {
-		if(consegueLerCartao())
+		if(consegueLerCartao()) {
+			servicoRemoto.recuperarConta();
+			
 			return "Usuário Autenticado";
+		}
+		
 		return null;
 	}
 
