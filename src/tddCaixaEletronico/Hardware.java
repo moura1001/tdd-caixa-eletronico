@@ -9,4 +9,6 @@ public interface Hardware {
 	BigDecimal lerEnvelope() throws HardwareException;
 	
 	BigDecimal processarValorParaSaque();
+	
+	void entregarDinheiro() throws HardwareException;
 }

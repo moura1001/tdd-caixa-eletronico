@@ -164,6 +164,25 @@ class CaixaEletronicoTest {
 			mensagemExibida = caixaEletronico.saldo();
 			assertEquals("O saldo é R$1.000,00", mensagemExibida);
 		}
+		
+		@Test
+		void deveriaLancarExcecaoPorFalhaNoHardwareAoTentarEntregarDinheiroDoSaque() {
+			hardware.configurarFalhaDeFuncionamento(FalhaHardware.ENTREGA_DINHEIRO_SAQUE);
+			hardware.configurarValorParaSaque(BigDecimal.valueOf(500));
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			HardwareException thrown = assertThrows(HardwareException.class, () -> {
+				caixaEletronico.sacar();
+	        });
+	        assertEquals("Falha de funcionamento do hardware: Erro na entrega do dinheiro", thrown.getMessage());
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+		}
 	}
 
 }

@@ -47,4 +47,10 @@ public class HardwareMock implements Hardware {
 		this.valorSaque = valorSaque;
 	}
 
+	@Override
+	public void entregarDinheiro() throws HardwareException {
+		if(FalhaHardware.ENTREGA_DINHEIRO_SAQUE.equals(falhaFuncionamento))
+			throw new HardwareException(falhaFuncionamento.causaDaFalha());
+	}
+
 }

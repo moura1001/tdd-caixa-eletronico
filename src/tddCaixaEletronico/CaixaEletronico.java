@@ -54,6 +54,12 @@ public class CaixaEletronico {
 			return "Saldo insuficiente";
 		
 		servicoRemoto.persistirConta(contaLogada);
+		try {
+			hardware.entregarDinheiro();
+		} catch (HardwareException e) {
+			contaLogada.reverterOperacao();
+			throw e;
+		}
 		contaLogada.confirmarOperacao();
 		return "Retire seu dinheiro";
 	}
