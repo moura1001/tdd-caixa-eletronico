@@ -23,7 +23,11 @@ public class ContaCorrente {
 	}
 
 	public void depositar(BigDecimal valorDeposito) {
-		saldoAConfirmar = saldo.add(valorDeposito);		
+		saldoAConfirmar = saldo.add(valorDeposito);
+	}
+	
+	public void sacar(BigDecimal valorSaque) {
+		saldoAConfirmar = saldo.subtract(valorSaque);
 	}
 	
 	public void reverterOperacao() {

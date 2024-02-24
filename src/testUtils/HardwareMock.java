@@ -10,6 +10,7 @@ public class HardwareMock implements Hardware {
 	private String numeroCartao;
 	private FalhaHardware falhaFuncionamento;
 	private BigDecimal valorDeposito;
+	private BigDecimal valorSaque;
 
 	@Override
 	public String pegarNumeroDaContaCartao() throws HardwareException {
@@ -35,6 +36,15 @@ public class HardwareMock implements Hardware {
 
 	public void configurarEnvelopeDeDeposito(BigDecimal valorDeposito) {
 		this.valorDeposito = valorDeposito;
+	}
+
+	@Override
+	public BigDecimal processarValorParaSaque() {
+		return valorSaque;
+	}
+
+	public void configurarValorParaSaque(BigDecimal valorSaque) {
+		this.valorSaque = valorSaque;
 	}
 
 }

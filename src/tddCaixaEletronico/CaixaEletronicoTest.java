@@ -129,5 +129,25 @@ class CaixaEletronicoTest {
 			assertEquals("O saldo é R$1.000,00", mensagemExibida);
 		}
 	}
+	
+	@Nested
+	@DisplayName("casos de teste para saque na conta")
+	class Sacar {
+		@Test
+		void deveriaSacarDaContaCorrenteComSucesso() {
+			hardware.configurarValorParaSaque(BigDecimal.valueOf(500));
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.sacar();
+			assertEquals("Retire seu dinheiro", mensagemExibida);
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$500,00", mensagemExibida);
+		}
+	}
 
 }

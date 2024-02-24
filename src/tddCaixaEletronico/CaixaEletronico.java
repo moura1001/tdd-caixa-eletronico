@@ -48,4 +48,12 @@ public class CaixaEletronico {
 		return "Depósito recebido com sucesso";
 	}
 
+	public String sacar() {
+		BigDecimal valorSaque = hardware.processarValorParaSaque();
+		contaLogada.sacar(valorSaque);
+		servicoRemoto.persistirConta(contaLogada);
+		contaLogada.confirmarOperacao();
+		return "Retire seu dinheiro";
+	}
+
 }
