@@ -13,7 +13,7 @@ public class HardwareMock implements Hardware {
 
 	@Override
 	public String pegarNumeroDaContaCartao() throws HardwareException {
-		if(falhaFuncionamento != null)
+		if(FalhaHardware.LEITURA_CARTAO.equals(falhaFuncionamento))
 			throw new HardwareException(falhaFuncionamento.causaDaFalha());
 		return numeroCartao;
 	}
@@ -28,6 +28,8 @@ public class HardwareMock implements Hardware {
 
 	@Override
 	public BigDecimal lerEnvelope() throws HardwareException {
+		if(FalhaHardware.LEITURA_ENVELOPE_DEPOSITO.equals(falhaFuncionamento))
+			throw new HardwareException(falhaFuncionamento.causaDaFalha());
 		return valorDeposito;
 	}
 

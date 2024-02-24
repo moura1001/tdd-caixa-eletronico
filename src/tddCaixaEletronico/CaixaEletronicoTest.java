@@ -90,6 +90,25 @@ class CaixaEletronicoTest {
 			mensagemExibida = caixaEletronico.saldo();
 			assertEquals("O saldo é R$1.500,00", mensagemExibida);
 		}
+		
+		@Test
+		void deveriaLancarExcecaoPorFalhaNoHardwareAoTentarLerOEnvelopeParaDeposito() {
+			hardware.configurarFalhaDeFuncionamento(FalhaHardware.LEITURA_ENVELOPE_DEPOSITO);
+			hardware.configurarEnvelopeDeDeposito(BigDecimal.valueOf(500));
+			servicoRemoto.configurarContaCorrente(new ContaCorrente(NUMERO_DA_CONTA, BigDecimal.valueOf(1_000.0)));
+			
+			caixaEletronico.logar();
+			String mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+			
+			HardwareException thrown = assertThrows(HardwareException.class, () -> {
+				caixaEletronico.depositar();
+	        });
+	        assertEquals("Falha de funcionamento do hardware: Erro na leitura do envelope de depósito", thrown.getMessage());
+			
+			mensagemExibida = caixaEletronico.saldo();
+			assertEquals("O saldo é R$1.000,00", mensagemExibida);
+		}
 	}
 
 }
